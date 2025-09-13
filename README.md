@@ -1,3 +1,8 @@
+## reason for fork: messing around the basics of packaging software with nix no reason why this one
+
+
+
+
 # HyprMon
 
 HyprMon is a TUI (Terminal User Interface) tool for configuring monitors on Arch Linux running Wayland with Hyprland. It provides a visual "desk map" where you can arrange monitors using keyboard and mouse controls, with real-time application to Hyprland.
