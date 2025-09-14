@@ -100,8 +100,7 @@
 
       imports =
         [flake-root.flakeModule]
-        ++ ./nix
-        |> listFilesRecursive
+        ++ listFilesRecursive ./nix
         |> filter (hasSuffix ".nix");
     };
 }

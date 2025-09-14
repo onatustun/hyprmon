@@ -1,14 +1,14 @@
-{
-  pkgs,
-  inputs,
-  lib,
-  ...
-}: {
-  perSystem = {self', ...}: {
+{inputs, ...}: {
+  perSystem = {
+    pkgs,
+    lib,
+    self',
+    ...
+  }: {
     packages.default = pkgs.buildGoModule {
       pname = "hyprmon";
       version = "0.0.8";
-      src = inputs.gitignore.lib.gitignoreSource ./.;
+      src = inputs.gitignore.lib.gitignoreSource ./..;
       vendorHash = "sha256-D3hd5GN7I7sV/dSWj45cMn0oyKDHZ1rE26OWWU34lFU=";
 
       meta = with lib; {

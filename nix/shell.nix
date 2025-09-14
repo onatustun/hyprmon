@@ -1,9 +1,10 @@
 {
-  pkgs,
-  config,
-  ...
-}: {
-  perSystem = {inputs', ...}: {
+  perSystem = {
+    pkgs,
+    config,
+    inputs',
+    ...
+  }: {
     devShells.default = pkgs.mkShell {
       name = "hyprmon-shell";
       shellHook = config.pre-commit.installationScript;

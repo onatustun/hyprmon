@@ -1,11 +1,11 @@
-{
-  inputs,
-  config,
-  ...
-}: {
+{inputs, ...}: {
   imports = [inputs.treefmt-nix.flakeModule];
 
-  perSystem = {inputs', ...}: {
+  perSystem = {
+    config,
+    inputs',
+    ...
+  }: {
     formatter = config.treefmt.build.wrapper;
 
     treefmt = {
