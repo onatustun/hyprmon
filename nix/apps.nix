@@ -1,8 +1,12 @@
 {
   perSystem = {self', ...}: {
-    apps.default = {
-      type = "app";
-      program = "${self'.packages.default}/bin/hyprmon";
+    apps = rec {
+      hyprmon = {
+        type = "app";
+        program = "${self'.packages.default}/bin/hyprmon";
+      };
+
+      default = hyprmon;
     };
   };
 }
