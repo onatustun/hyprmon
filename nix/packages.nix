@@ -1,4 +1,16 @@
-{inputs, ...}: {
+{
+  self,
+  pkgs,
+  inputs,
+  ...
+}: let
+  version_rev =
+    if (self ? rev)
+    then (builtins.substring 0 8 self.rev)
+    else "dirty";
+
+  version = "${pkgs.lib.fileContents ../VERSION}-${version_rev}-flake";
+in {
   perSystem = {
     pkgs,
     lib,
@@ -8,7 +20,7 @@
     packages = rec {
       hyprmon = pkgs.buildGoModule {
         pname = "hyprmon";
-        version = "0.0.8";
+        inherit version;
         src = inputs.gitignore.lib.gitignoreSource ./..;
         vendorHash = "sha256-D3hd5GN7I7sV/dSWj45cMn0oyKDHZ1rE26OWWU34lFU=";
 
