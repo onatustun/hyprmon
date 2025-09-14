@@ -28,7 +28,7 @@
           package = inputs'.deadnix.packages.default;
         };
 
-        gofumpt.enable = true;
+        gofmt.enable = true;
       };
     };
   };

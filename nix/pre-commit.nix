@@ -24,6 +24,7 @@
             package = inputs'.deadnix.packages.default;
           };
 
+          gofmt.enable = true;
           treefmt.enable = true;
         };
       };
