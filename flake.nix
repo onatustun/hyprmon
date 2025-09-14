@@ -35,7 +35,7 @@
     flake-registry = "";
     show-trace = true;
   };
-  
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -79,133 +79,29 @@
 
     deadnix = {
       url = "github:astro/deadnix";
-
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
+      inputs = {nixpkgs.follows = "nixpkgs";};
     };
   };
 
   outputs = inputs @ {
-    nixpkgs,
     flake-parts,
+    nixpkgs,
     systems,
     flake-root,
-    pre-commit-hooks,
-    treefmt-nix,
-    gitignore,
     ...
   }: let
-    inherit (nixpkgs) lib;
+    inherit (flake-parts.lib) mkFlake;
+    inherit (nixpkgs.lib) filesystem filter hasSuffix;
+    inherit (filesystem) listFilesRecursive;
   in
-    flake-parts.lib.mkFlake {inherit inputs;} {
+    mkFlake {inherit inputs;} {
       debug = true;
       systems = import systems;
 
-      imports = [
-        flake-root.flakeModule
-        pre-commit-hooks.flakeModule
-        treefmt-nix.flakeModule
-      ];
-
-      perSystem = {
-        pkgs,
-        self',
-        config,
-        inputs',
-        ...
-      }: {
-        packages.default = pkgs.buildGoModule {
-          pname = "hyprmon";
-          version = "0.0.8";
-          src = gitignore.lib.gitignoreSource ./.;
-          vendorHash = "sha256-D3hd5GN7I7sV/dSWj45cMn0oyKDHZ1rE26OWWU34lFU=";
-          env.CGO_ENABLED = 0;
-          subPackages = ["."];
-
-          meta = with lib; {
-            description = "TUI monitor configuration tool for Hyprland with visual layout, drag-and-drop, and profile management";
-            license = licenses.asl20;
-            mainProgram = "hyprmon";
-            platforms = platforms.linux;
-          };
-        };
-
-        apps.default = {
-          type = "app";
-          program = "${self'.packages.default}/bin/hyprmon";
-        };
-
-        pre-commit = {
-          check.enable = true;
-
-          settings = {
-            package = inputs'.pre-commit-hooks.packages.default;
-
-            excludes = [
-              "\\.envrc$"
-              "flake\\.lock$"
-            ];
-
-            hooks = {
-              alejandra = {
-                enable = true;
-                package = inputs'.alejandra.packages.default;
-              };
-
-              deadnix = {
-                enable = true;
-                package = inputs'.deadnix.packages.default;
-              };
-
-              treefmt.enable = true;
-            };
-          };
-        };
-
-        devShells.default = pkgs.mkShell {
-          name = "hyprmon-shell";
-          shellHook = config.pre-commit.installationScript;
-          inputsFrom = [config.treefmt.build.devShell];
-
-          packages = with pkgs;
-            [
-              git
-              go
-              gopls
-              gotools
-            ]
-            ++ (with inputs'; [
-              alejandra.packages.default
-              deadnix.packages.default
-            ]);
-        };
-
-        formatter = config.treefmt.build.wrapper;
-
-        treefmt = {
-          inherit (config.flake-root) projectRootFile;
-          enableDefaultExcludes = true;
-
-          settings.global.excludes = [
-            "*.envrc"
-            "flake.lock"
-          ];
-
-          programs = {
-            alejandra = {
-              enable = true;
-              package = inputs'.alejandra.packages.default;
-            };
-
-            deadnix = {
-              enable = true;
-              package = inputs'.deadnix.packages.default;
-            };
-          };
-        };
-
-        checks.default = self'.packages.default;
-      };
+      imports =
+        [flake-root.flakeModule]
+        ++ ./nix
+        |> listFilesRecursive
+        |> filter (hasSuffix ".nix");
     };
 }
