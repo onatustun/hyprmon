@@ -1,6 +1,6 @@
 {
   self,
-  pkgs,
+  lib,
   inputs,
   ...
 }: let
@@ -9,7 +9,7 @@
     then (builtins.substring 0 8 self.rev)
     else "dirty";
 
-  version = "${pkgs.lib.fileContents ../VERSION}-${version_rev}-flake";
+  version = "${lib.fileContents ../VERSION}-${version_rev}-flake";
 in {
   perSystem = {
     pkgs,
