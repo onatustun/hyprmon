@@ -12,7 +12,6 @@
     else "dirty";
 
   version = "${fileContents (self + "/VERSION")}-${versionRev}-flake";
-  vendorHash = fileContents (self + "/go.mod.sri");
 in {
   perSystem = {
     pkgs,
@@ -20,14 +19,20 @@ in {
     ...
   }: {
     packages = let
-      inherit (pkgs) buildGoModule;
+      inherit (pkgs.extend inputs.gomod2nix.overlays.default) buildGoApplication;
       inherit (inputs.gitignore.lib) gitignoreSource;
     in rec {
-      hyprmon = buildGoModule {
+      hyprmon = buildGoApplication {
+        go = pkgs.go_1_24;
         pname = "hyprmon";
-        inherit version vendorHash;
+        inherit version;
+
+        subPackages = ["."];
+        CGO_ENABLED = "0";
+
         src = gitignoreSource ./..;
-        env.CGO_ENABLED = "0";
+        pwd = self;
+        modules = self + "/gomod2nix.toml";
 
         meta = with lib; {
           description = "TUI monitor configuration tool for Hyprland with visual layout, drag-and-drop, and profile management";

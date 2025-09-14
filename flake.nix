@@ -46,6 +46,11 @@
       flake = false;
     };
 
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
+
     flake-root.url = "github:srid/flake-root";
 
     gitignore = {
@@ -79,7 +84,20 @@
 
     deadnix = {
       url = "github:astro/deadnix";
-      inputs = {nixpkgs.follows = "nixpkgs";};
+
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        utils.follows = "flake-utils";
+      };
+    };
+
+    gomod2nix = {
+      url = "github:nix-community/gomod2nix";
+
+      inputs = {
+        flake-utils.follows = "flake-utils";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
   };
 

@@ -13,13 +13,15 @@
       packages = with pkgs;
         [
           git
-          go
+          go_1_24
           gofumpt
+          gopls
           gotools
         ]
         ++ (with inputs'; [
           alejandra.packages.default
           deadnix.packages.default
+          gomod2nix.packages.default
         ]);
     };
   };
