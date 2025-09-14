@@ -14,7 +14,7 @@
         [
           git
           go
-          gopls
+          gofumpt
           gotools
         ]
         ++ (with inputs'; [

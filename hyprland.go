@@ -220,7 +220,7 @@ func writeConfig(monitors []Monitor) error {
 		return fmt.Errorf("failed to read config: %w", err)
 	}
 
-	if err := os.WriteFile(backupPath, input, 0644); err != nil {
+	if err := os.WriteFile(backupPath, input, 0o644); err != nil {
 		return fmt.Errorf("failed to create backup: %w", err)
 	}
 
@@ -318,7 +318,7 @@ func writeConfig(monitors []Monitor) error {
 	}
 
 	tempPath := configPath + ".tmp"
-	if err := os.WriteFile(tempPath, []byte(strings.Join(newLines, "\n")), 0644); err != nil {
+	if err := os.WriteFile(tempPath, []byte(strings.Join(newLines, "\n")), 0o644); err != nil {
 		return fmt.Errorf("failed to write temp file: %w", err)
 	}
 

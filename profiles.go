@@ -42,7 +42,7 @@ func ensureProfilesDir() error {
 	if dir == "" {
 		return fmt.Errorf("could not determine profiles directory")
 	}
-	return os.MkdirAll(dir, 0755)
+	return os.MkdirAll(dir, 0o755)
 }
 
 func saveProfile(name string, monitors []Monitor) error {
@@ -71,7 +71,7 @@ func saveProfile(name string, monitors []Monitor) error {
 		return err
 	}
 
-	return os.WriteFile(filename, data, 0644)
+	return os.WriteFile(filename, data, 0o644)
 }
 
 func loadProfile(name string) (*Profile, error) {
@@ -165,7 +165,7 @@ func saveProfileOrder(order []string) error {
 		return err
 	}
 
-	return os.WriteFile(filename, data, 0644)
+	return os.WriteFile(filename, data, 0o644)
 }
 
 func renameProfile(oldName, newName string) error {
@@ -444,8 +444,7 @@ func (m profileMenuModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.selected > 0 && m.selected < len(m.profiles)-2 &&
 				!strings.HasPrefix(m.profiles[m.selected], "─") {
 				// Swap in display list
-				m.profiles[m.selected], m.profiles[m.selected-1] =
-					m.profiles[m.selected-1], m.profiles[m.selected]
+				m.profiles[m.selected], m.profiles[m.selected-1] = m.profiles[m.selected-1], m.profiles[m.selected]
 
 				// Update profile order and save
 				m.profileOrder = make([]string, 0)
@@ -469,8 +468,7 @@ func (m profileMenuModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				!strings.HasPrefix(m.profiles[m.selected], "─") &&
 				!strings.HasPrefix(m.profiles[m.selected+1], "─") {
 				// Swap in display list
-				m.profiles[m.selected], m.profiles[m.selected+1] =
-					m.profiles[m.selected+1], m.profiles[m.selected]
+				m.profiles[m.selected], m.profiles[m.selected+1] = m.profiles[m.selected+1], m.profiles[m.selected]
 
 				// Update profile order and save
 				m.profileOrder = make([]string, 0)
