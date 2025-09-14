@@ -10,6 +10,7 @@
     else "dirty";
 
   version = "${lib.fileContents ../VERSION}-${version_rev}-flake";
+  vendorHash = lib.fileContents ../go.mod.sri;
 in {
   perSystem = {
     pkgs,
@@ -22,7 +23,8 @@ in {
         pname = "hyprmon";
         inherit version;
         src = inputs.gitignore.lib.gitignoreSource ./..;
-        vendorHash = "sha256-D3hd5GN7I7sV/dSWj45cMn0oyKDHZ1rE26OWWU34lFU=";
+        inherit vendorHash;
+        env.CGO_ENABLED = 0;
 
         meta = with lib; {
           homepage = "https://github.com/erans/hyprmon";
