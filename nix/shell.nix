@@ -1,8 +1,11 @@
-{
+{lib, ...}: let
+  inherit (lib) concatLists;
+in {
   perSystem = {
     pkgs,
     config,
     inputs',
+    self',
     ...
   }: {
     devShells.default = pkgs.mkShell {
@@ -10,19 +13,21 @@
       shellHook = config.pre-commit.installationScript;
       inputsFrom = [config.treefmt.build.devShell];
 
-      packages = with pkgs;
-        [
-          git
+      packages = concatLists [
+        (with pkgs; [
           go_1_24
-          gofumpt
-          gopls
+          go-tools
           gotools
-        ]
-        ++ (with inputs'; [
+        ])
+
+        (with inputs'; [
           alejandra.packages.default
           deadnix.packages.default
           gomod2nix.packages.default
-        ]);
+        ])
+
+        [self'.packages.hyprmon]
+      ];
     };
   };
 }

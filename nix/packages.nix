@@ -39,6 +39,7 @@ in {
           homepage = "https://github.com/erans/hyprmon";
           license = licenses.asl20;
           mainProgram = "hyprmon";
+          maintainers = with maintainers; [onatustun];
           platforms = platforms.linux;
         };
       };

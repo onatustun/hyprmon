@@ -29,6 +29,7 @@
         };
 
         gofmt.enable = true;
+        staticcheck.enable = true;
       };
     };
   };
