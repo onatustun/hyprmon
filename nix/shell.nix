@@ -11,7 +11,11 @@ in {
     devShells.default = pkgs.mkShell {
       name = "hyprmon-shell";
       shellHook = config.pre-commit.installationScript;
-      inputsFrom = [config.treefmt.build.devShell];
+
+      inputsFrom = with config; [
+        flake-root.devShell
+        treefmt.build.devShell
+      ];
 
       packages = concatLists [
         (with pkgs; [
