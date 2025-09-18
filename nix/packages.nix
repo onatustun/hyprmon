@@ -14,15 +14,20 @@
   version = "${fileContents (self + "/VERSION")}-${versionRev}-flake";
 in {
   perSystem = {
+    system,
     pkgs,
     self',
     ...
   }: {
+    _module.args.pkgs = import inputs.nixpkgs {
+      inherit system;
+      overlays = [inputs.gomod2nix.overlays.default];
+    };
+
     packages = let
-      inherit (pkgs.extend inputs.gomod2nix.overlays.default) buildGoApplication;
       inherit (inputs.gitignore.lib) gitignoreSource;
     in rec {
-      hyprmon = buildGoApplication {
+      hyprmon = pkgs.buildGoApplication {
         go = pkgs.go_1_24;
         pname = "hyprmon";
         inherit version;

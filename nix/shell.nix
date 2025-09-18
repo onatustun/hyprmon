@@ -9,7 +9,7 @@ in {
     ...
   }: {
     devShells.default = pkgs.mkShell {
-      name = "hyprmon-shell";
+      name = "hyprmon-dev";
       shellHook = config.pre-commit.installationScript;
 
       inputsFrom = with config; [
