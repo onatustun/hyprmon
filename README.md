@@ -1,4 +1,4 @@
-## reason for fork: messing around the basics of packaging software with nix no reason why this one
+forked just to test basic packaging of a go project in nix
 
 
 
@@ -29,11 +29,35 @@ HyprMon is a TUI (Terminal User Interface) tool for configuring monitors on Arch
 
 ![Profiles Screen](./img/hyprmon-profiles.png)
 
+## Try it!
+
+If you have Nix setup with flakes enabled, you can try out hyprmon with:
+`nix run github:onatustun/hyprmon`
+Nix will build the hyprmon pkg and run it.
+
 ## Installation
 
 ### via AUR
 
 `yay -S hyprmon-bin`
+
+### via Nix
+
+First add the following to your configuration flake:
+`hyprmon.url = "github:onatustun/hyprmon";`
+
+Then you can add hyprmon to your packages like so:
+`
+{
+  inputs,
+  pkgs,
+  ...
+}: {
+  environment.systemPackages = [ # or home.packages
+    inputs.hyprmon.packages.${pkgs.stdenv.hostPlatform.system}.hyprmon # or .default which points to .hyprmon
+  ];
+}
+`
 
 ### From source
 
