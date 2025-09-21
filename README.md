@@ -34,7 +34,7 @@ HyprMon is a TUI (Terminal User Interface) tool for configuring monitors on Arch
 If you have Nix setup with flakes enabled, you can try out hyprmon with:
 
 ```nix
-nix run github:onatustun/hyprmon
+nix run github:onatustun/hyprmon --accept-flake-config
 ```
 
 Nix will build the hyprmon pkg and run it.
