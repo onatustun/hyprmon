@@ -50,7 +50,7 @@ Nix will build the hyprmon pkg and run it.
 First add the following to your configuration flake:
 
 ```nix
-  hyprmon.url = "github:onatustun/hyprmon";
+hyprmon.url = "github:onatustun/hyprmon";
 ```
 
 Then you can add hyprmon to your packages like so:
