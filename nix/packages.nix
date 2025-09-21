@@ -21,12 +21,14 @@ in {
   }: {
     _module.args.pkgs = import inputs.nixpkgs {
       inherit system;
-      overlays = [inputs.gomod2nix.overlays.default];
+
+      overlays = with inputs; [
+        gitignore.overlay
+        gomod2nix.overlays.default
+      ];
     };
 
-    packages = let
-      inherit (inputs.gitignore.lib) gitignoreSource;
-    in rec {
+    packages = rec {
       hyprmon = pkgs.buildGoApplication {
         go = pkgs.go_1_24;
         pname = "hyprmon";
@@ -35,7 +37,7 @@ in {
         subPackages = ["."];
         CGO_ENABLED = "0";
 
-        src = gitignoreSource ./..;
+        src = pkgs.gitignoreSource ./..;
         pwd = self;
         modules = self + "/gomod2nix.toml";
 
