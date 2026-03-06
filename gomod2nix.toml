@@ -1,5 +1,5 @@
 schema = 3
-# ffksldjfkltest
+
 [mod]
   [mod."github.com/atotto/clipboard"]
     version = "v0.1.4"
